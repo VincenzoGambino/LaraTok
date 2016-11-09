@@ -25,6 +25,6 @@
         "psr-4": {
             "VincenzoGambino\\LaraTok\\": "src/"
         }
-    }
+    },
     "minimum-stability": "stable"
 }
