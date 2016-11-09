@@ -13,6 +13,10 @@ class LaraTokServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        include __DIR__.'/Routes/web.php';
+        $this->loadMigrationsFrom(__DIR__.'/Migrations');
+
         // Publish Configuration
         $this->publishes([
           __DIR__.'/Config/laratok.php' => config_path('laratok.php'),
