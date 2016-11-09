@@ -21,5 +21,10 @@
             "email": "gambinovin@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "VincenzoGambino\\LaraTok\\": "src/"
+        }
+    }
     "minimum-stability": "stable"
 }
