@@ -14,7 +14,7 @@ class LaraTokController extends BaseController {
 
   public function admin() {
     if (!config('laratok.api.api_key') && !config('laratok.api_secret.key')) {
-      return 'Please, add api_key and secret key to the laratok config file';
+      return 'Please, add api_key and secret_key to the laratok config file in /config/laratok.php';
     }
     $laratok = new LaraTok();
     $laratok->generateSession();
