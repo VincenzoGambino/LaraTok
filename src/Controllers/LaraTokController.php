@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by Vincenzo Gambino
- * Date: 22/10/2016
+ * Date: 22/06/2016
  * Time: 23:23
  */
 namespace VincenzoGambino\LaraTok\Controllers;
@@ -16,6 +16,8 @@ class LaraTokController extends BaseController {
     if (!config('laratok.api.api_key') && !config('laratok.api_secret.key')) {
       return 'Please, add api_key and secret key to the laratok config file';
     }
+    $laratok = new LaraTok();
+    $laratok->generateSession();
     return 'Installed';
   }
 }
