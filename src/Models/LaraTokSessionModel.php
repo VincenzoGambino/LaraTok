@@ -9,7 +9,7 @@ class LaraTokSessionModel extends Model
     protected $table = 'laratok_sessions';
     protected $fillable = [
       'session_name',
-      'session_id',
+      'sessionId',
       'media_mode',
       'archive_mode',
       'location'

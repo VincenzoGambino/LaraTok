@@ -28,11 +28,13 @@ class LaraTokController extends BaseController {
   }
 
   public function simple() {
-    $laratok = DB::table('laratok_tokens')
-      ->leftJoin('laratok_sessions', 'laratok_tokens.session_id', '=', 'laratok_sessions.id')
-      ->select('laratok_sessions.session_name', 'laratok_tokens.*')
+    $laratok = DB::table('laratok_sessions')
+      ->select('sessionId')
+      ->crossJoin('laratok_tokens', 'laratok_sessions.id', '=', 'laratok_tokens.session_id')
+      ->select('laratok_tokens.*', 'laratok_sessions.*')
       ->get()
       ->first();
-    return view('laratok::samples.simples', compact('lararok'));
+    return $laratok;
+    //return view('laratok::examples.simples', compact('laratok'));
   }
 }

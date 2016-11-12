@@ -52,7 +52,7 @@ class LaraTok {
       $name = $this->generateRandomName($name);
       LaraTokSessionModel::create([
         'session_name' => $name,
-        'session_id' => $session_id,
+        'sessionId' => $session_id,
         'media_mode' => $sessionOptions['mediaMode'],
         'archive_mode' => $sessionOptions['archiveMode'],
         'location' => $sessionOptions['location'],
@@ -90,14 +90,14 @@ class LaraTok {
    * @param null $expire_time
    * @param null $data
    */
-    public function generateTokens($session_id = NULL, $role = NULL, $expire_time = NULL, $data = NULL)  {
+    public function generateToken($session_id = NULL, $role = NULL, $expire_time = NULL, $data = NULL)  {
       $tokenOptions = array(
         'role' => $role != NULL ? $role : config('laratok.token.role'),
         'expireTime' => $expire_time != NULL ? $expire_time : config('laratok.token.expire_time'),
         'data' => $data != NULL ? $data : '',
       );
       $this->token = $this->opentok->generateToken($session_id, $tokenOptions);
-      $laratok_session_id = LaraTokSessionModel::where('session_id', '=', $session_id)->firstOrFail();
+      $laratok_session_id = LaraTokSessionModel::where('sessionId', '=', $session_id)->firstOrFail();
        LaraTokTokenModel::create([
         'session_id' => $laratok_session_id['id'],
         'token_id' => $this->token,
