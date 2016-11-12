@@ -21,7 +21,6 @@ class LaraTok {
     private $api_secret;
     private $opentok;
     private $session;
-    const LARATOK_SESSION_NAME_EXAMPLE = 'laratok_session_example';
 
 
     /**
@@ -41,7 +40,7 @@ class LaraTok {
    * @param null $location
    * @param null $name
    */
-    function generateSession($media_mode = NULL, $archive_mode = NULL, $location = NULL, $name = NULL) {
+    function generateSession($name = NULL, $media_mode = NULL, $archive_mode = NULL, $location = NULL) {
       $sessionOptions = array(
         'archiveMode' => $archive_mode != NULL ? $archive_mode : config('laratok.session.archive_mode'),
         'mediaMode' => $media_mode != null ? $media_mode : config('laratok.session.media_mode'),

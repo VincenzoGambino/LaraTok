@@ -14,6 +14,9 @@ use VincenzoGambino\LaraTok\Models\LaraTokTokenModel;
 
 class LaraTokController extends BaseController {
 
+  /**
+   * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+   */
   public function admin() {
     if (!config('laratok.api.api_key') && !config('laratok.api_secret.key')) {
       return 'Please, add api_key and secret_key to the laratok config file in /config/laratok.php';
@@ -24,17 +27,6 @@ class LaraTokController extends BaseController {
       ->get()
       ->groupBy('session_name');
 
-    return view('laratok::admin.laratok', compact('sessions'));
-  }
-
-  public function simple() {
-    $laratok = DB::table('laratok_sessions')
-      ->select('sessionId')
-      ->crossJoin('laratok_tokens', 'laratok_sessions.id', '=', 'laratok_tokens.session_id')
-      ->select('laratok_tokens.*', 'laratok_sessions.*')
-      ->get()
-      ->first();
-    return $laratok;
-    //return view('laratok::examples.simples', compact('laratok'));
+    return view('laratok::admin.admin', compact('sessions'));
   }
 }
