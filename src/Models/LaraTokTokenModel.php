@@ -1,6 +1,6 @@
 <?php
 
-namespace VincenzoGambino\LaraTok;
+namespace VincenzoGambino\LaraTok\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

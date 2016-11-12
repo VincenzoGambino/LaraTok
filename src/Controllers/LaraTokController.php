@@ -8,7 +8,9 @@ namespace VincenzoGambino\LaraTok\Controllers;
 
 use ClassPreloader\Config;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\DB;
 use VincenzoGambino\LaraTok\LaraTok;
+use VincenzoGambino\LaraTok\Models\LaraTokTokenModel;
 
 class LaraTokController extends BaseController {
 
@@ -16,8 +18,21 @@ class LaraTokController extends BaseController {
     if (!config('laratok.api.api_key') && !config('laratok.api_secret.key')) {
       return 'Please, add api_key and secret_key to the laratok config file in /config/laratok.php';
     }
-    $laratok = new LaraTok();
-    $laratok->generateSession();
-    return 'Installed';
+    $sessions = DB::table('laratok_tokens')
+      ->leftJoin('laratok_sessions', 'laratok_tokens.session_id', '=', 'laratok_sessions.id')
+      ->select('laratok_sessions.session_name', 'laratok_tokens.*')
+      ->get()
+      ->groupBy('session_name');
+
+    return view('laratok::admin.laratok', compact('sessions'));
+  }
+
+  public function simple() {
+    $laratok = DB::table('laratok_tokens')
+      ->leftJoin('laratok_sessions', 'laratok_tokens.session_id', '=', 'laratok_sessions.id')
+      ->select('laratok_sessions.session_name', 'laratok_tokens.*')
+      ->get()
+      ->first();
+    return view('laratok::samples.simples', compact('lararok'));
   }
 }

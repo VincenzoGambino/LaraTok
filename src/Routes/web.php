@@ -7,4 +7,6 @@
 
 Route::group(['namespace' => 'VincenzoGambino\LaraTok\Controllers', 'prefix'=>'laratok'], function() {
   Route::get('', 'LaraTokController@admin');
+  Route::get('examples', 'LaraTokController@examples');
+  Route::get('examples/simple', 'LaraTokController@simple');
 });

@@ -36,6 +36,8 @@ class LaraTokServiceProvider extends ServiceProvider
       // Config
       $this->mergeConfigFrom( __DIR__ . '/Config/laratok.php', 'laratok');
 
+      $this->loadViewsFrom(__DIR__ . '/Views', 'laratok');
+
       $this->app->bind('vincenzogambino-laratok', function() {
         return new LaraTok;
       });
