@@ -11,6 +11,7 @@ Route::group(['namespace' => 'VincenzoGambino\LaraTok\Controllers', 'prefix'=>'l
 
 Route::group(['namespace' => 'VincenzoGambino\LaraTok\Controllers', 'prefix'=>'laratok/examples'], function() {
   Route::get('', 'LaraTokExamplesController@examples');
-  Route::get('simple', 'LaraTokExamplesController@simple');
   Route::post('generate', 'LaraTokExamplesController@generateExamples');
+  Route::get('simple', 'LaraTokExamplesController@simple');
+  Route::get('signaling', 'LaraTokExamplesController@simpleSignaling');
 });

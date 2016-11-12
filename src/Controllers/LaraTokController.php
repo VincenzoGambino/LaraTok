@@ -18,8 +18,9 @@ class LaraTokController extends BaseController {
    * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
    */
   public function admin() {
-    if (!config('laratok.api.api_key') && !config('laratok.api_secret.key')) {
-      return 'Please, add api_key and secret_key to the laratok config file in /config/laratok.php';
+    if (empty(config('laratok.api.api_key')) && empty(config('laratok.api.api_secret'))) {
+      $no_api = 'Please, add api_key and secret_key to the laratok config file in /config/laratok.php';
+      return view('laratok::examples.examples', compact('no_api'));
     }
     $sessions = DB::table('laratok_tokens')
       ->leftJoin('laratok_sessions', 'laratok_tokens.session_id', '=', 'laratok_sessions.id')

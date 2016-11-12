@@ -7,7 +7,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">LaraTok Examples</div>
                     <div class="panel-body">
-                        @if (!$sessions)
+                        @if ($sessions->isEmpty())
                             <form class="form-horizontal" role="form" method="POST" action="{{ url('/laratok/examples/generate') }}">
                                 <button type="submit" class="btn btn-primary">
                                     Generate Examples
@@ -15,16 +15,16 @@
                             </form>
                         @else
                             @foreach ($sessions as $key => $session)
-                                <table>
-                                    <tr><td>Name: {{ $key }}</td></tr>
+                                <table style="table-layout: fixed; width: 100%">
+                                    <tr><td colspan="5">Session name: {{ $key }}</td></tr>
                                     <tr><th>id</th><th>TokenID</th><th>Role</th><th>Expire Time</th><th>Created</th></tr>
                                     @foreach ($session as $token)
                                         <tr>
-                                            <td>{{ $token->id }}</td>
-                                            <td>{{ $token->token_id }}</td>
-                                            <td>{{ $token->role }}</td>
-                                            <td>{{ $token->expire_time }}</td>
-                                            <td>{{ $token->created_at }}</td>
+                                            <td class="col-md-1">{{ $token->id }}</td>
+                                            <td class="col-md-5" style="word-wrap: break-word">{{ $token->token_id }}</td>
+                                            <td class="col-md-2">{{ $token->role }}</td>
+                                            <td class="col-md-2">{{ $token->expire_time }}</td>
+                                            <td class="col-md-2">{{ $token->created_at }}</td>
                                         </tr>
                                     @endforeach
                                 </table>

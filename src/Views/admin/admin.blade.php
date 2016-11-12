@@ -7,8 +7,10 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">LaraTok Overview</div>
                     <div class="panel-body">
-                        @if (!$sessions)
-                            Add api_key and api_secret in config/laratok.php
+                        @if (isset($no_api))
+                            {{ $no_api }}
+                        @elseif ($sessions->isEmpty())
+                            You have no session created. If may create a session example with tokens in the <a href="/laratok/examples">LaraTok example</a> page.
                         @else
                             @foreach ($sessions as $key => $session)
                                 <table style="table-layout: fixed; width: 100%">

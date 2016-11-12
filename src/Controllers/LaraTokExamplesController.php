@@ -26,6 +26,7 @@ class LaraTokExamplesController extends BaseController {
       ->where('laratok_sessions.session_name', '=', self::LARATOK_SESSION_NAME_EXAMPLE)
       ->get()
       ->groupBy('session_name');
+
     return view('laratok::examples.examples', compact('sessions'));
   }
 
@@ -58,5 +59,19 @@ class LaraTokExamplesController extends BaseController {
       ->first();
 
     return view('laratok::examples.simples', compact('laratok'));
+  }
+
+  /**
+   * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+   */
+  public function simpleSignaling() {
+    $laratok = DB::table('laratok_sessions')
+      ->select('sessionId')
+      ->crossJoin('laratok_tokens', 'laratok_sessions.id', '=', 'laratok_tokens.session_id')
+      ->select('laratok_tokens.*', 'laratok_sessions.*')
+      ->get()
+      ->first();
+
+    return view('laratok::examples.signaling', compact('laratok'));
   }
 }
