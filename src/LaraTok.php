@@ -48,7 +48,7 @@ class LaraTok {
    *     ]
    * @return string $session_id
    */
-    public function generateSession(array $params=NULL) {
+    public function generateSession($params=NULL) {
 
       // Build sessionsOption array
       $sessionOptions = array(
@@ -120,7 +120,7 @@ class LaraTok {
    *     ]
    * @return string $session_id
    */
-    public function generateToken($session_id, array $params=NULL)  {
+    public function generateToken($session_id, $params=NULL)  {
 
       // Generate tokenOptions array.
       $tokenOptions = array(
