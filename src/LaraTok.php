@@ -29,26 +29,43 @@ class LaraTok {
      * Initialise the OpenTok object.
      */
     public function __construct() {
+      if (empty(config('laratok.api.api_key')) || empty(config('laratok.api.api_secret'))) {
+        return 'Please, add api_key and secret_key to the laratok config file in /config/laratok.php';
+      }
       $this->api_key = config('laratok.api.api_key');
       $this->api_secret = config('laratok.api.api_secret');
       $this->opentok = new OpenTok($this->api_key, $this->api_secret);
     }
 
   /**
-   * @param null $media_mode
-   * @param null $archive_mode
-   * @param null $location
-   * @param null $name
+   * Generate Session.
+   * @param array $params Array containing the necessary params.
+   *     $params [
+   *        'media_mode' => (String) Media mode. Default larartok.session.media_mode
+   *        'archive_mode' => (String) Archive mode. Default larartok.session.archive_mode
+   *        'location' => (String) Location. Default larartok.session.location
+   *        'name' => (String) Session name. Optional.
+   *     ]
+   * @return string $session_id
    */
-    function generateSession($name = NULL, $media_mode = NULL, $archive_mode = NULL, $location = NULL) {
+    public function generateSession(array $params=NULL) {
+
+      // Build sessionsOption array
       $sessionOptions = array(
-        'archiveMode' => $archive_mode != NULL ? $archive_mode : config('laratok.session.archive_mode'),
-        'mediaMode' => $media_mode != null ? $media_mode : config('laratok.session.media_mode'),
-        'location' => $location != NULL ? $location : config('laratok.session.location'),
+        'archiveMode' => isset($params['archive_mode']) ? $params['archive_mode'] : config('laratok.session.archive_mode'),
+        'mediaMode' => isset($params['media_mode']) ? $params['media_mode'] : config('laratok.session.media_mode'),
+        'location' => isset($params['location']) ? $params['location'] : config('laratok.session.location'),
       );
+
+      // Generate Session.
       $this->session = $this->opentok->createSession($sessionOptions);
       $session_id = $this->session->getSessionId();
+
+      // Generate name.
+      $name = isset($params['name']) ? $params['name'] : NULL;
       $name = $this->generateRandomName($name);
+
+      // Save session in the database.
       LaraTokSessionModel::create([
         'session_name' => $name,
         'sessionId' => $session_id,
@@ -56,14 +73,18 @@ class LaraTok {
         'archive_mode' => $sessionOptions['archiveMode'],
         'location' => $sessionOptions['location'],
       ]);
+
+      // Return session_id
       return $session_id;
     }
 
     /**
      * @param null $session_name
-     * @return null|string
+     * @return string $session_name
      */
-    static function generateRandomName($session_name = NULL) {
+    public function generateRandomName($session_name = NULL) {
+
+      // Generate 20 characters random name.
       if($session_name == NULL) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -72,6 +93,8 @@ class LaraTok {
           $session_name .= $characters[rand(0, $charactersLength - 1)];
         }
       }
+
+      // Check if name already exists.
       if (Schema::hasTable('laratok_sessions')) {
         $name = LaraTokSessionModel::where('session_name', '=', $session_name)->get();
       }
@@ -79,24 +102,37 @@ class LaraTok {
         $name = 0;
       }
       $count = count($name);
+
+      // If it already exists, it will add a number at the end of the name.
       $session_name = $count >= 1 ? $session_name . '-' . $count : $session_name;
       return $session_name;
     }
 
   /**
-   * @param null $session_id
-   * @param null $role
-   * @param null $expire_time
-   * @param null $data
+   * Generate Token.
+   * @param string $session_id.
+   *
+   * @param array $params Array containing the necessary params.
+   *     $params [
+   *        'role' => (String) Role. Default larartok.session.role
+   *        'expire_time' => (String) Expire time. Default larartok.session.expire_time
+   *        'data' => (String) Data. Default larartok.session.data
+   *     ]
+   * @return string $session_id
    */
-    public function generateToken($session_id = NULL, $role = NULL, $expire_time = NULL, $data = NULL)  {
+    public function generateToken($session_id, array $params=NULL)  {
+
+      // Generate tokenOptions array.
       $tokenOptions = array(
-        'role' => $role != NULL ? $role : config('laratok.token.role'),
-        'expireTime' => $expire_time != NULL ? $expire_time : config('laratok.token.expire_time'),
-        'data' => $data != NULL ? $data : '',
+        'role' => isset($params['role']) ? $params['role'] : config('laratok.token.role'),
+        'expireTime' => isset($params['expire_time']) ? $params['expire_time'] : config('laratok.token.expire_time'),
+        'data' => isset($params['data']) ? $params['data'] : '',
       );
       $this->token = $this->opentok->generateToken($session_id, $tokenOptions);
+
       $laratok_session_id = LaraTokSessionModel::where('sessionId', '=', $session_id)->firstOrFail();
+
+      // Save token in database.
        LaraTokTokenModel::create([
         'session_id' => $laratok_session_id['id'],
         'token_id' => $this->token,

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LaraTokSessionModel extends Model
 {
     protected $table = 'laratok_sessions';
+
     protected $fillable = [
       'session_name',
       'sessionId',
