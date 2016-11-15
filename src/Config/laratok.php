@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by Vincenzo Gambino
- * Date: 22/10/2016
+ * Date: 22/06/2016
  * Time: 22:58
  */
 
@@ -11,12 +11,12 @@ return [
     'api_secret' => '',
   ],
   'session' => [
-    'media_mode' => 'RELAYED',
-    'archive_mode' => 'MANUAL',
+    'media_mode' => 'enabled', // enabled = relayed, disbaled = routed
+    'archive_mode' => 'manual', // manual, always
     'location' => NULL,
   ],
   'token' => [
-    'role' => 'PUBLISHER',
+    'role' => 'publisher', // moderator, publisher, subscriber
     'expire_date' => NULL,
     'data' => NULL,
   ],

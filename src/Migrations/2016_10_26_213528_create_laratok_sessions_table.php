@@ -16,7 +16,7 @@ class CreateLaraTokSessionsTable extends Migration
         Schema::create('laratok_sessions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('session_name');
-            $table->longText('session_id');
+            $table->longText('sessionId');
             $table->string('media_mode');
             $table->string('archive_mode');
             $table->ipAddress('location')->nullable();
