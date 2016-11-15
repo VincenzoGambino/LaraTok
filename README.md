@@ -6,7 +6,7 @@ Laravel package for OpenTok.
 ```
 composer require vincenzogambino/laratok
 ```
-Add the package to your application service providers in config/app.php file for provider
+
 ### Open your config/app.php and add the following to the providers array:
 ```
 'providers' => [
@@ -32,7 +32,7 @@ Add the package to your application service providers in config/app.php file for
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         ...
         'LaraTok' => VincenzoGambino\LaraTok\Facade\LaraTokFacade::class,
-
+        
     ],
 ```
 ### Run the command below to publish the package config file config/laratok.php:
@@ -44,3 +44,54 @@ php artisan vendor:publish
 ```
 php artisan migrate
 ```
+
+### Set configuration on config/laratok.php:
+Minimum configuration:
+- api_key
+- api_secret
+
+You must have a tokbox account in order to have the parameteres above.
+
+
+## Admin Pages:
+- /laratok
+
+From this page you can see existing tokens grouped by sessions.
+
+## Example Pages:
+- /laratok/examples
+
+Pages showing example session and token. If example session and token does not exist it can be generated from there.
+
+- /laratok/examples/simple
+
+Simple video chat example
+
+- /laratok/examples/signaling
+
+Example page with videochat and messaging.
+
+# Usage:
+
+### Generate Session and persist it in the database:
+```
+$latarok = new Laratok();
+$laratok->generateSession();
+```
+
+### Generate Token and persist it in the database:
+```
+$latarok = new Laratok();
+$laratok->generateToken();
+```
+## Usage:
+```
+$laratok = new LaraTok();
+$session_id = $laratok->generateSession();
+$token_id = $laratok->generateToken($session_id);
+
+return view('YOUR_VIEW', compact('session_id', 'token_id'));
+```
+
+## OpenTok documentation:
+https://tokbox.com/developer/
